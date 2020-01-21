@@ -1,0 +1,36 @@
+# This workflow will build and push a new container image to Docker hub
+
+on:
+    push:
+      branches:
+        - master
+  
+  name: Build image and deploy to Docker Hub
+  
+  jobs:
+    deploy:
+      name: Deploy
+      runs-on: ubuntu-latest
+  
+      steps:
+      - name: Checkout
+        uses: actions/checkout@master
+  
+      - name: Login to DockerHub Registry
+        run: docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password "${{ secrets.DOCKERHUB_PASSWORD }}" 
+  
+      - name: Build and tag image
+        id: build-image
+        run: docker build . --file Dockerfile --tag rafaeltests/app:${{ github.sha }}
+             
+      - name: Tag image
+        run: docker tag rafaeltests/app:${{ github.sha }} rafaeltests/app:${{ github.sha }}
+  
+      - name: Push the tagged Docker image
+        run: docker push rafaeltests/app
+      
+      - name: Build the latest Docker image
+        run: docker build . --file Dockerfile --tag rafaeltests/app:latest
+      
+      - name: Push the latest Docker image
+        run: docker push rafaeltests/app:latest
