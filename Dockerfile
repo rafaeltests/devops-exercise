@@ -5,11 +5,11 @@ LABEL maintainer="rafael_nize@outlook.com"
 RUN apt-get update -y && \
     apt-get install -y python-pip python-dev
 
-COPY ./requirements.txt /app/requirements.txt
+COPY ./requirement.txt /app/requirement.txt
 
 WORKDIR /app
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirement.txt
 
 COPY . /app
 
