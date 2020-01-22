@@ -15,5 +15,6 @@ spec:
       containers:
       - name: app
         image: rafaeltests/app:latest
+        imagePullPolicy: "Always"
         ports:
         - containerPort: 5000
