@@ -19,13 +19,13 @@ You'll need:
 ## Ready for action?
 
 Great!!
-As a DevOps we need you to create a mechanism to deploy nanoservices. You'll be in charge of deploy, monitor, scale applications and promote the DevOps culture with the development team. But let's start by the begining, below you'll find the requirements for this test.
+As a DevOps we need you to create a mechanism to deploy nanoservices. You'll be in charge of deploy, monitor, scale applications and promote the DevOps culture with the development team. But let's start by the beginning, below you'll find the requirements for this test.
 
 ### Dockerize services
 
 Dockerize the given service at [app.py](app.py), including all it's required dependencies installed and ready to rock.
 
-The Dockerfile references a vanilla Ubuntu version 18.04 and install python in order to comply with flask requirements.
+The Dockerfile references a vanilla Ubuntu version 18.04 and installs python in order to comply with flask requirements.
 
 Only app.py and requirement.txt are copied during the image build, avoiding not related files from the root folder.
 
@@ -33,7 +33,7 @@ Only app.py and requirement.txt are copied during the image build, avoiding not 
 
 Implement a Github Actions workflow to build and publish your docker image on [docker hub](https://hub.docker.com/).
 
-The solution used a github workflow file docker.yml, found at .github/workflows this workflow is responsible to pull the code in case of new commit in the repository for that branch. Only master branch is currently configured.
+The solution used a github workflow file docker.yml, found at .github/workflows this workflow is responsible to pull the code in case of new commit in the repository for that branch. The only master branch is currently configured.
 The same workflow is in charge also to build, tag and push the docker image to the docker hub.
 
 The docker images are stored at:
@@ -45,14 +45,14 @@ For this time no automatic deploy is being considered for Minikube. The current 
 
 ### Deployment
 
-Before the application deployment we need to install MetallB, which will provide the external IP address for the service when using Minikube or a bare metal deployment. In this way, MetallB will pretend to be a physical or cloud load balancer. For cloud based deployments this step is not required because such External IP is delivered by the provider, usually through an internet facing load balancer.
+Before the application deployment we need to install MetallB, which will provide the external IP address for the service when using Minikube or a bare metal deployment. In this way, MetallB will pretend to be a physical or cloud load balancer. For cloud-based deployments this step is not required because such External IP is delivered by the provider, usually through an internet-facing load balancer.
 
 MetallB installation: https://metallb.universe.tf/installation/
 
 - Execute: 
   kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
 
-MetallLB can provide IPs for the load balancers services exposed in the cluster based on different configurations. For this scenario we use a address range, 192.168.99.20-192.168.99.100  . They vary depending on environment, virtualization solution or physical.
+MetallLB can provide IPs for the load balancers services exposed in the cluster based on different configurations. For this scenario, we use a address range, 192.168.99.20-192.168.99.100  . They vary depending on environment, virtualization solution or physical.
 
 - Apply the configmap:
 
@@ -68,18 +68,18 @@ MetallLB can provide IPs for the load balancers services exposed in the cluster 
 
     4. kubectl get replicaset  -n metallb-system
 
-Now, with MetalLB running, is time to deploy the application:
+Now, with MetalLB running, its time to deploy the application:
 
 Create a service configuration file to deploy the service on your kubernetes cluster and expose it to the world.
 
-The service configuration file app-service.yml uses LoadBalancer type since we want the service externally accesible and the traffic sent to specific port in the cluster nodes.
+The service configuration file app-service.yml uses LoadBalancer type since we want the service externally accessible and the traffic sent to a specific port in the cluster nodes.
 
 The main advantages are the LoadBalancer offers more flexibility compared to NodePort service which has some limitations with ports or changes in Node's IP. 
 
 - Execute:
   kubectl apply -f app-service.yml
 
-In addition of the service, for this deployment, uses the kubernetes deployment object which allows updates, scallability and roll out management for pods.
+In addition to the service, for this deployment, uses the kubernetes deployment object which allows updates, scalability and rollout management for pods.
 
 Since we are providing a stateless application, its definition is very simple.
 
@@ -144,6 +144,18 @@ Hello World!!!
 
 - Improve the given python service so it maintains a counter of the amount of **POST** requests it served, and return it on **GET** requests.
 
+Disclaimer: The solution proposed is considered very simple. It will maintain the records as long as the process is still running. A more robust solution would be the use of persistent storage or database to keep the records in a more fault-tolerant way. 
+
+
+- Call to the POST request counter with no data:
+  curl --data '' http://127.0.0.1/post
+
+- Get a JSON response with the number of POST requests to '/post' method
+  curl http://127.0.0.1:5000/get
+
+- Calls the original method path:
+  curl http://127.0.0.1:5000/
+
 ## Deliverables
 
 - A link to the public docker registry where the image is published.
@@ -154,7 +166,7 @@ Hello World!!!
     https://github.com/rafaeltests/devops-exercise
 
     1. The Dockerfile(s) for the image(s).
-    2. The kubernetes file(s) for the service deployment(s). The deployment should be replicable on our kubernetes cluster.
+    2. The kubernetes file(s) for service deployment(s). The deployment should be replicable on our kubernetes cluster.
     3. Optionally the code for the improved version of the service.
 
 ## General Guidelines
